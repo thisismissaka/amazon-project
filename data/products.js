@@ -642,7 +642,23 @@ const products = [
     ]
   },
   {
-    id: "bc2847e9-5323-403f-b7cf-57fde044a955",
+    id: "bc2847e9-5323-403f-b7cf-57fde044a951",
+    image: "images/products/bathroom-mat-rug.jpg",
+    name: "OLANLY Bathroom Rugs Mat 30x20",
+    rating: {
+      stars: 4.5,
+      count: 51500
+    },
+    priceCents: 1499,
+    keywords: [
+      "Mat",
+      "rugs",
+      "apparel",
+      "bathroom"
+    ]
+  },
+  {
+    id: "bc2847e9-5323-403f-b7cf-57fde044a952",
     image: "images/products/men-cozy-fleece-zip-up-hoodie-red.jpg",
     name: "Men's Full-Zip Hooded Fleece Sweatshirt",
     rating: {
@@ -655,6 +671,86 @@ const products = [
       "hoodies",
       "apparel",
       "mens"
+    ]
+  },
+  {
+    id: "bc2847e9-5323-403f-b7cf-57fde044a953",
+    image: "images/products/samsung-galaxy-s24-fe.jpg",
+    name: "SAMSUNG Galaxy S24 FE AI Phone",
+    rating: {
+      stars: 4.5,
+      count: 586
+    },
+    priceCents: 70900,
+    keywords: [
+      "samsung",
+      "s24",
+      "phone",
+      "android"
+    ]
+  },
+  {
+    id: "bc2847e9-5323-403f-b7cf-57fde044a954",
+    image: "images/products/security-camera-pan.jpg",
+    name: "Kasa 2K QHD Security Camera Pan/Tilt",
+    rating: {
+      stars: 4.5,
+      count: 34661
+    },
+    priceCents: 4499,
+    keywords: [
+      "security",
+      "camera",
+      "cam",
+      "sensor"
+    ]
+  },
+  {
+    id: "bc2847e9-5323-403f-b7cf-57fde044a955",
+    image: "images/products/wireless-earbuds-bluetooth.jpg",
+    name: "Wireless Earbuds Bluetooth",
+    rating: {
+      stars: 5.0,
+      count: 1261
+    },
+    priceCents: 16999,
+    keywords: [
+      "earbuds",
+      "blootooth",
+      "headphones",
+      "wireless"
+    ]
+  },
+  {
+    id: "bc2847e9-5323-403f-b7cf-57fde044a956",
+    image: "images/products/coslus-water-dental.jpg",
+    name: "COSLUS Water Dental Flosser Teeth Pick",
+    rating: {
+      stars: 4.5,
+      count: 32157
+    },
+    priceCents: 3999,
+    keywords: [
+      "dental",
+      "flosser",
+      "oral",
+      "teeth"
+    ]
+  },
+  {
+    id: "bc2847e9-5323-403f-b7cf-57fde044a957",
+    image: "images/products/samsung-ssd-4TB.jpg",
+    name: "SAMSUNG 990 EVO Plus SSD 4TB, PCIe Gen 4x4",
+    rating: {
+      stars: 5.0,
+      count: 3057
+    },
+    priceCents: 34499,
+    keywords: [
+      "storage",
+      "samsung",
+      "ssd",
+      "M.2"
     ]
   }
 ];

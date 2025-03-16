@@ -140,6 +140,11 @@ document.querySelectorAll('.js-save-quantity').forEach((link)=>{
         const updatedQuantity = document.querySelector(`.js-quantity-input-${productId}`);
         const newQuantity = Number(updatedQuantity.value);
 
+        if (newQuantity < 0 || newQuantity >= 1000) {
+            alert('Quantity must be at least 0 and less than 1000');
+            return;
+        }
+
         updateQuantity(productId, newQuantity);
 
         const quantityLabel = document.querySelector('.js-quantity-label');

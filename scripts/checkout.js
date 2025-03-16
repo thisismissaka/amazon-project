@@ -106,3 +106,10 @@ document.querySelectorAll('.js-remove-cartItem').forEach((link)=>{
         container.remove();
     });
 });
+
+let cartQuantity = 0;
+  cart.forEach((cartItem)=>{
+    cartQuantity += cartItem.quantity;
+  });
+
+document.querySelector('.js-checkoutHeader-quantity').innerHTML = `${cartQuantity} items`;

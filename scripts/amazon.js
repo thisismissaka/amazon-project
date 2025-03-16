@@ -61,9 +61,15 @@ products.forEach((product)=>{
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
 function updateCartQuantity(){
+  if(caculateCartQuantity()=== 0){
 
-  document.querySelector('.js-cart-quantity').innerHTML = `${caculateCartQuantity()}`;
-  
+    document.querySelector('.js-cart-quantity').innerHTML = ' ';
+
+  }else{
+    
+    document.querySelector('.js-cart-quantity').innerHTML = `${caculateCartQuantity()}`;
+
+  }
 }
 
 const setTime = {};

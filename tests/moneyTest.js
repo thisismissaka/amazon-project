@@ -1,11 +1,11 @@
-import { formatCurrancy } from '../scripts/utils.js';
+import { formatCurrency } from '../scripts/utils.js';
 
 console.log('test suite: formatCurrancy');
 
 console.log('converts cents to dollars');
 
 
-if(formatCurrancy(2095)==='20.95'){
+if(formatCurrency(2095)==='20.95'){
     console.log('passed');
 }else{
     console.log('failed');
@@ -13,7 +13,7 @@ if(formatCurrancy(2095)==='20.95'){
 
 console.log('works with 0');
 
-if(formatCurrancy(0)==='0.00'){
+if(formatCurrency(0)==='0.00'){
     console.log('passed');
 }else{
     console.log('failed');
@@ -21,7 +21,7 @@ if(formatCurrancy(0)==='0.00'){
 
 console.log('round up to the nearest cent');
 
-if(formatCurrancy(2000.5)==='20.01'){
+if(formatCurrency(2000.5)==='20.01'){
     console.log('passed');
 }else{
     console.log('failed');

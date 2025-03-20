@@ -22,7 +22,8 @@ export function renderOrderSummary(){
 
         cartItemSummaryHTML +=
             `
-            <div class="cart-item-container js-class-item-container-${matchingProduct.id}">
+            <div class="cart-item-container 
+                js-cart-item-container js-cart-item-container-${matchingProduct.id}">
                 <div class="delivery-date">
                     Delivery date: ${deliveryDateString}
                 </div>
@@ -38,9 +39,9 @@ export function renderOrderSummary(){
                     <div class="product-price">
                         $${formatCurrency(matchingProduct.priceCents)}
                     </div>
-                    <div class="product-quantity">
+                    <div class="product-quantity js-product-quantity-${matchingProduct.id}">
                         <span>
-                        Quantity: <span class="quantity-label js-quantity-label js-quantity-label-default" data-product-id ="${matchingProduct.id}"></span>
+                        Quantity: <span class="quantity-label js-quantity-label" >${cartItem.quantity}</span>
                         </span>
                         <span class="update-quantity-link link-primary js-update-quantity" data-product-id ="${matchingProduct.id}">
                         Update
@@ -49,7 +50,7 @@ export function renderOrderSummary(){
                         <span class="save-quantity-link link-primary js-save-quantity" data-product-id ="${matchingProduct.id}">
                         Save
                         </span>
-                        <span class="delete-quantity-link link-primary js-remove-cartItem" data-product-id="${matchingProduct.id}">
+                        <span class="delete-quantity-link link-primary js-remove-cartItem js-delete-link-${matchingProduct.id}" data-product-id="${matchingProduct.id}">
                         Delete
                         </span>
                     </div>
@@ -107,7 +108,7 @@ export function renderOrderSummary(){
             const productId = link.dataset.productId;
             removeFromCart(productId);
 
-            const container = document.querySelector(`.js-class-item-container-${productId}`);
+            const container = document.querySelector(`.js-cart-item-container-${productId}`);
             container.remove();
 
             updateCartQuantity();
@@ -115,37 +116,19 @@ export function renderOrderSummary(){
             renderPaymentSummary();
         });
     });
-
-    function updateCartQuantity(){
+    function updateCartQuantity() {
+        const quantityElement = document.querySelector('.js-checkoutHeader-quantity');
     
-        document.querySelector('.js-checkoutHeader-quantity').innerHTML = `${caculateCartQuantity()} items`; 
+        quantityElement.innerHTML = `${caculateCartQuantity()} items`;
     }
-
+    
     updateCartQuantity();
-
-    document.querySelectorAll('.js-quantity-label-default').forEach((element)=>{
-        const {productId} =  element.dataset;
-
-        let matchingItem ;
-
-        cart.forEach((addedProduct)=>{
-            if(productId===addedProduct.productId){
-                matchingItem = addedProduct;
-            }
-        });
-
-        if(matchingItem){
-            element.innerHTML = matchingItem.quantity;
-        }else{
-            console.warn(`No matching item found for productId: ${productId}`);
-        }
-    });
 
     document.querySelectorAll('.js-update-quantity').forEach((link)=>{
         link.addEventListener('click', ()=>{
             const productId = link.dataset.productId;
 
-            const container = document.querySelector(`.js-class-item-container-${productId}`);
+            const container = document.querySelector(`.js-cart-item-container-${productId}`);
 
             container.classList.add('is-editing-quantity');
         });
@@ -155,7 +138,7 @@ export function renderOrderSummary(){
         link.addEventListener('click', ()=>{
             const productId = link.dataset.productId;
 
-            const container = document.querySelector(`.js-class-item-container-${productId}`);
+            const container = document.querySelector(`.js-cart-item-container-${productId}`);
             container.classList.remove('is-editing-quantity');
 
             const updatedQuantity = document.querySelector(`.js-quantity-input-${productId}`);

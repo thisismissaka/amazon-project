@@ -1,6 +1,6 @@
 import { caculateCartQuantity, cart, removeFromCart, updateDeliveryOptionId, updateQuantity } from '../../data/cart.js';
 import { getProduct, products } from '../../data/products.js';
-import { formatCurrency } from '../utils.js';
+import { formatCurrency } from '../utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
 import { renderPaymentSummary } from './paymentSummary.js';
@@ -40,7 +40,7 @@ export function renderOrderSummary(){
                     </div>
                     <div class="product-quantity">
                         <span>
-                        Quantity: <span class="quantity-label js-quantity-label"></span>
+                        Quantity: <span class="quantity-label js-quantity-label js-quantity-label-default" data-product-id ="${matchingProduct.id}"></span>
                         </span>
                         <span class="update-quantity-link link-primary js-update-quantity" data-product-id ="${matchingProduct.id}">
                         Update
@@ -122,6 +122,24 @@ export function renderOrderSummary(){
     }
 
     updateCartQuantity();
+
+    document.querySelectorAll('.js-quantity-label-default').forEach((element)=>{
+        const {productId} =  element.dataset;
+
+        let matchingItem ;
+
+        cart.forEach((addedProduct)=>{
+            if(productId===addedProduct.productId){
+                matchingItem = addedProduct;
+            }
+        });
+
+        if(matchingItem){
+            element.innerHTML = matchingItem.quantity;
+        }else{
+            console.warn(`No matching item found for productId: ${productId}`);
+        }
+    });
 
     document.querySelectorAll('.js-update-quantity').forEach((link)=>{
         link.addEventListener('click', ()=>{

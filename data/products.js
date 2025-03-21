@@ -12,7 +12,7 @@ export function getProduct(productId){
   return matchingProduct;
 }
 
-class Product {
+export class Product {
   id;
   image;
   name;
@@ -24,7 +24,7 @@ class Product {
     this.image = productDetails.image;
     this.name = productDetails.name;
     this.rating = productDetails.rating;
-    this,this.priceCents = productDetails.priceCents;
+    this.priceCents = productDetails.priceCents;
   }
 
   getStarsUrl(){
@@ -38,7 +38,7 @@ class Product {
   }
 }
 
-class Clothing extends Product{
+export class Clothing extends Product{
   sizeChartLink;
 
   constructor(productDetails){
@@ -49,6 +49,23 @@ class Clothing extends Product{
   extraInfoHTML(){
     return `<a href="${this.sizeChartLink}" target="_blank">
     Size Chart</a>`;
+  }
+}
+
+export class Appliance extends Product{
+  instructionsLink;
+  warrantyLink;
+
+  constructor(productDetails){
+    super(productDetails);
+    this.instructionsLink = productDetails.instructionsLink;
+    this.warrantyLink = productDetails.warrantyLink;
+  }
+  extraInfoHTML(){
+    return `<a href="${this.instructionsLink}" target="_blank">
+    Instructions</a>
+     <a href="${this.warrantyLink}" target="_blank">
+    Warranty</a>`;
   }
 }
 
@@ -144,7 +161,10 @@ export const products = [
       "toaster",
       "kitchen",
       "appliances"
-    ]
+    ],
+    type: 'appliance',
+    instructionsLink: 'images/appliance-instructions.png',
+    warrantyLink: 'images/appliance-warranty.png'
   },
   {
     id: "3ebe75dc-64d2-4137-8860-1f5a963e534b",
@@ -329,7 +349,10 @@ export const products = [
       "water boiler",
       "appliances",
       "kitchen"
-    ]
+    ],
+    type: 'appliance',
+    instructionsLink: 'images/appliance-instructions.png',
+    warrantyLink: 'images/appliance-warranty.png'
   },
   {
     id: "6b07d4e7-f540-454e-8a1e-363f25dbae7d",
@@ -634,7 +657,10 @@ export const products = [
       "coffeemakers",
       "kitchen",
       "appliances"
-    ]
+    ],
+    type: 'appliance',
+    instructionsLink: 'images/appliance-instructions.png',
+    warrantyLink: 'images/appliance-warranty.png'
   },
   {
     id: "02e3a47e-dd68-467e-9f71-8bf6f723fdae",
@@ -694,7 +720,10 @@ export const products = [
       "food blenders",
       "kitchen",
       "appliances"
-    ]
+    ],
+    type: 'appliance',
+    instructionsLink: 'images/appliance-instructions.png',
+    warrantyLink: 'images/appliance-warranty.png'
   },
   {
     id: "36c64692-677f-4f58-b5ec-0dc2cf109e27",
@@ -842,6 +871,8 @@ export const products = [
 ].map((productDetails)=>{
   if(productDetails.type==='clothing'){
     return new Clothing(productDetails);
+  }else if(productDetails.type==='appliance'){
+    return new Appliance(productDetails);
   }
   return new Product(productDetails);
 });

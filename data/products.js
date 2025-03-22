@@ -20,7 +20,7 @@ export class Product {
   priceCents;
 
   constructor(productDetails){
-    this.id =productDetails.id;
+    this.id = productDetails.id;
     this.image = productDetails.image;
     this.name = productDetails.name;
     this.rating = productDetails.rating;
@@ -102,6 +102,24 @@ object3.method();
 
 export let products = [];
 
+export function loadProductsFetch(){
+  const promise = fetch('https://supersimplebackend.dev/products').then((response)=>{
+    return response.json();
+  }).then((productsData)=>{
+    products = productsData.map((productDetails)=>{
+      if(productDetails.type==='clothing'){
+        return new Clothing(productDetails);
+      }else if(productDetails.type==='appliance'){
+        return new Appliance(productDetails);
+      }
+      return new Product(productDetails);
+    });
+    console.log('Products Loaded!');
+  });
+  return promise;
+}
+
+/*
 export function loadProducts(fun){
   const xhr = new XMLHttpRequest();
 
@@ -120,6 +138,7 @@ export function loadProducts(fun){
   xhr.open('GET', 'https://supersimplebackend.dev/products');
   xhr.send();
 }
+*/
 
 /*
 export const products = [

@@ -1,8 +1,7 @@
 import { caculateCartQuantity, cart, removeFromCart, updateDeliveryOptionId, updateQuantity } from '../../data/cart.js';
 import { getProduct, products } from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
-import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
+import { calculateDeliveryDate, deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
 import { renderPaymentSummary } from './paymentSummary.js';
 
 export function renderOrderSummary(){
@@ -16,16 +15,14 @@ export function renderOrderSummary(){
         const deliveryOptionId = cartItem.deliveryOptionId;
         const deliveryOption = getDeliveryOption(deliveryOptionId);
 
-        let today = dayjs();
-            const deliveryDate = today.add(deliveryOption.deliveryTime, 'days');
-            const deliveryDateString = deliveryDate.format('dddd, MMMM D');
+        const dateString = calculateDeliveryDate(deliveryOption);
 
         cartItemSummaryHTML +=
             `
             <div class="cart-item-container 
                 js-cart-item-container js-cart-item-container-${matchingProduct.id}">
                 <div class="delivery-date">
-                    Delivery date: ${deliveryDateString}
+                    Delivery date: ${dateString}
                 </div>
 
                 <div class="cart-item-details-grid">
@@ -72,9 +69,7 @@ export function renderOrderSummary(){
         let optionsHTML = '';
 
         deliveryOptions.forEach((option) =>{
-            let today = dayjs();
-            const deliveryDate = today.add(option.deliveryTime, 'days');
-            const deliveryDateString = deliveryDate.format('dddd, MMMM D');
+            const dateString = calculateDeliveryDate(option);
 
             const optionPrice = option.deliveryPrice===0 ? 'FREE': `$${formatCurrency(option.deliveryPrice)} -`;
             const isChecked = option.id === cartItem.deliveryOptionId;
@@ -90,7 +85,7 @@ export function renderOrderSummary(){
                     name="delivery-option-${matchingProduct.id}">
                     <div>
                         <div class="delivery-option-date">
-                            ${deliveryDateString}
+                            ${dateString}
                         </div>
                         <div class="delivery-option-price">
                             ${optionPrice} Shipping
@@ -114,6 +109,7 @@ export function renderOrderSummary(){
 
             updateCartQuantity();
 
+            renderOrderSummary();
             renderPaymentSummary();
         });
     });

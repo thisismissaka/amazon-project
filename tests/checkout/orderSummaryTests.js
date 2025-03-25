@@ -8,7 +8,6 @@ describe('test suite: renderOrderSummary',()=>{
 
     beforeAll(async()=>{
         await loadProductsFetch(); 
-        
     });
 
     beforeEach(()=>{
@@ -100,5 +99,4 @@ describe('test suite: renderOrderSummary',()=>{
         expect(document.querySelector('.js-shipping-cost').innerHTML).toEqual('$14.98');
 
       });
-
 });

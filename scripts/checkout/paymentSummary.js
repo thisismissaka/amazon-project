@@ -4,7 +4,6 @@ import { getProduct, products } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import { addOrder } from "../../data/orders.js";
 
-
 export function renderPaymentSummary(){
     let totalQuantity = 0;
     let totalAmount = 0;
@@ -62,7 +61,7 @@ export function renderPaymentSummary(){
         </button>
     `;
     document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;
-
+    
     document.querySelector('.js-place-order').addEventListener('click',async ()=>{
         try{
         const response = await fetch('https://supersimplebackend.dev/orders',{
@@ -81,7 +80,6 @@ export function renderPaymentSummary(){
         }catch(error){
             console.log('Unexpected error. Please try again later.');
         }
-
         window.location.href = 'orders.html';
     });
 }

@@ -1,5 +1,5 @@
 export class Cart {
-  cartItem;
+  cart;
   #localStorageKey;
 
   constructor(localStorageKey){
@@ -8,23 +8,16 @@ export class Cart {
   }
   
   #loadFromStorage() {
-    this.cartItem = JSON.parse(localStorage.getItem(this.#localStorageKey));
+    this.cart = JSON.parse(localStorage.getItem(this.#localStorageKey));
 
-    if (!this.cartItem) {
-      this.cartItem = [{
-        productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
-        quantity: 2,
-        deliveryOptionId: '1'
-      }, {
-        productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
-        quantity: 1,
-        deliveryOptionId: '2'
-      }];
+    if (!this.cart) {
+      this.cart= [];
+      console.log('Cart is empty!');
     }
   }
 
   saveToStorage(){
-      localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItem));
+      localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cart));
   }
 
   addToCart(productId){
@@ -33,7 +26,7 @@ export class Cart {
     const quantity = quantityElement ? Number(quantityElement.value) : 1; // Default to 1 if null; this line added because of the test
     let matchingItem;
 
-    this.cartItem.forEach((cartItem)=>{
+    this.cart.forEach((cartItem)=>{
       if(productId===cartItem.productId){
         matchingItem = cartItem;
       }
@@ -42,7 +35,7 @@ export class Cart {
     if(matchingItem){
       matchingItem.quantity += quantity; 
     }else{        
-      this.cartItem.push({
+      this.cart.push({
         productId,
         quantity,               
         deliveryOptionId: '1'
@@ -59,13 +52,13 @@ export class Cart {
               newCart.push(cartItem);
           }
       });
-      this.cartItem = newCart;
+      this.cart = newCart;
       this.saveToStorage();
   }
 
   caculateCartQuantity(){
       let cartQuantity = 0;
-      this.cartItem.forEach((cartItem)=>{
+      this.cart.forEach((cartItem)=>{
           cartQuantity += cartItem.quantity;
       });
       return cartQuantity;
@@ -74,7 +67,7 @@ export class Cart {
   updateQuantity(productId, newQuantity){
       let matchingItem = 0;
 
-      this.cartItem.forEach((cartItem)=>{
+      this.cart.forEach((cartItem)=>{
           if(productId===cartItem.productId){
               matchingItem = cartItem;
           }
@@ -86,7 +79,7 @@ export class Cart {
   updateDeliveryOptionId(productId, deliveryOptionId){
       let matchingItem;
     
-      this.cartItem.forEach((cartItem)=>{
+      this.cart.forEach((cartItem)=>{
         if(productId===cartItem.productId){
           matchingItem = cartItem;
         }

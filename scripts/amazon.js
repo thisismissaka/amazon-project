@@ -1,5 +1,5 @@
-import {cart, addToCart, caculateCartQuantity, updateCartQuantity} from '../data/cart.js';
-import { loadProductsFetch, products } from '../data/products.js';
+import {cart, addToCart, caculateCartQuantity, updateCartQuantity} from './data/cart.js';
+import { loadProductsFetch, products } from './data/products.js';
 
 renderProductsGrid();
 

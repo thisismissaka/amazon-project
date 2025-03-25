@@ -1,4 +1,4 @@
-import { Product, Clothing, Appliance } from '../../data/products.js';
+import { Product, Clothing, Appliance } from '../../scripts/data/products.js';
 
 describe('test suite: Porduct Class', ()=>{
     let product;

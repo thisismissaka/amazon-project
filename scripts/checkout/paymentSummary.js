@@ -1,8 +1,8 @@
-import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
-import { cart } from "../../data/cart.js";
-import { getProduct, products } from "../../data/products.js";
+import { deliveryOptions, getDeliveryOption } from "../data/deliveryOptions.js";
+import { cart } from "../data/cart.js";
+import { getProduct, products } from "../data/products.js";
 import { formatCurrency } from "../utils/money.js";
-import { addOrder } from "../../data/orders.js";
+import { addOrder } from "../data/orders-fun.js";
 
 export function renderPaymentSummary(){
     let totalQuantity = 0;

@@ -1,7 +1,11 @@
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import formatCurrency from './utils/money.js';
-import { getProduct, loadProductsFetch, products } from '../data/products.js';
+import { getProduct, loadProductsFetch } from '../data/products.js';
 import { orders } from '../data/orders.js';
+import { addToCart } from '../data/cart.js';
+import { updateCartQuantity } from '../data/cart.js';
+
+generateOrderHTML();
 
 async function generateOrderHTML(){
 
@@ -25,40 +29,43 @@ async function generateOrderHTML(){
             const deliveryTime = dayjs(time).format('MMMM D');
             const {quantity} = item;
 
+            const trackingLink = document.querySelectorAll(".product-actions a");
+            trackingLink.href = `tracking.html?orderId=${order.id}&productId=${matchingItem.id}`;
+
 
             orderedItemHTML += `
-                <div class="order-details-grid">
-                    <div class="product-image-container">
-                        <img src=${matchingItem.image}>
-                    </div>
-                    <div class="product-details">
-                        <div class="product-name">
-                            ${matchingItem.name}
-                        </div>
-                        <div class="product-delivery-date">
-                            Arriving on: ${deliveryTime}
-                        </div>
-                        <div class="product-quantity">
-                            Quantity: ${quantity}
-                        </div>
-                        <button class="buy-again-button button-primary">
-                            <img class="buy-again-icon" src="images/icons/buy-again.png">
-                            <span class="buy-again-message">Buy it again</span>
-                        </button>
-                    </div>
-                    <div class="product-actions">
-                        <a href="tracking.html?orderId=123&productId=456">
-                            <button class="track-package-button button-secondary">
-                            Track package
-                            </button>
-                        </a>
-                    </div>
+                
+                <div class="product-image-container">
+                    <img src=${matchingItem.image}>
                 </div>
+                <div class="product-details">
+                    <div class="product-name">
+                        ${matchingItem.name}
+                    </div>
+                    <div class="product-delivery-date">
+                        Arriving on: ${deliveryTime}
+                    </div>
+                    <div class="product-quantity">
+                        Quantity: ${quantity}
+                    </div>
+                    <button class="buy-again-button button-primary js-buy-again-button" data-product-id="${matchingItem.id}">
+                        <img class="buy-again-icon" src="images/icons/buy-again.png">
+                        <span class="buy-again-message">Buy it again</span>
+                    </button>
+                </div>
+                <div class="product-actions">
+                    <a href=${trackingLink.href}>
+                        <button class="track-package-button button-secondary">
+                        Track package
+                        </button>
+                    </a>
+                </div>
+                
             `;
         });
 
         orderHTML += `
-
+        
             <div class="order-container">
                 <div class="order-header">
                     <div class="order-header-left-section">
@@ -77,30 +84,31 @@ async function generateOrderHTML(){
                     <div>${orderId}</div>
                     </div>
                 </div>
-                <div class="orders-grid js-orders-grid">
-                    ${orderedItemHTML}
+                <div class="order-details-grid">
+                ${orderedItemHTML}
                 </div>                
             </div>
         
         `;
     });
+    updateCartQuantity();
 
     document.querySelector('.js-orders-grid').innerHTML = orderHTML;
+
+    document.querySelectorAll('.js-buy-again-button').forEach((button)=>{
+        button.addEventListener('click', ()=>{
+
+            const {productId} = button.dataset;
+            addToCart(productId);     
+
+            button.innerHTML = 'Added';
+            setTimeout(()=>{
+                button.innerHTML =`
+                <img class="buy-again-icon" src="images/icons/buy-again.png">
+                <span class="buy-again-message">Buy it again</span>
+                `;
+            },1000);
+            updateCartQuantity()
+        });
+    });
 }
-
-generateOrderHTML();
-
-// export async function loadOrderPage() {
-//     try {
-//         await loadProductsFetch();
-//         generateOrderHTML();
-//     } catch (error) {
-//         console.error("Error loading order page:", error);
-//     }
-// }
-//loadOrderPage();
-
-// document.addEventListener("DOMContentLoaded", () => {
-//     loadOrderPage();
-// });
-

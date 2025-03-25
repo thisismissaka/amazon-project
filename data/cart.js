@@ -71,6 +71,18 @@ export function updateQuantity(productId, newQuantity){
     saveToStorage();
 }
 
+export function updateCartQuantity(){
+  if(caculateCartQuantity()=== 0){
+
+    document.querySelector('.js-cart-quantity').innerHTML = ' ';
+
+  }else{
+    
+    document.querySelector('.js-cart-quantity').innerHTML = `${caculateCartQuantity()}`;
+
+  }
+}
+
 export function updateDeliveryOptionId(productId, deliveryOptionId){
   let matchingItem;
 

@@ -1,6 +1,5 @@
-import {cart, addToCart, caculateCartQuantity} from '../data/cart.js';
+import {cart, addToCart, caculateCartQuantity, updateCartQuantity} from '../data/cart.js';
 import { loadProductsFetch, products } from '../data/products.js';
-import  formatCurrency  from './utils/money.js';
 
 renderProductsGrid();
 
@@ -66,18 +65,6 @@ async function renderProductsGrid(){
   });
 
   document.querySelector('.js-products-grid').innerHTML = productsHTML;
-
-  function updateCartQuantity(){
-    if(caculateCartQuantity()=== 0){
-
-      document.querySelector('.js-cart-quantity').innerHTML = ' ';
-
-    }else{
-      
-      document.querySelector('.js-cart-quantity').innerHTML = `${caculateCartQuantity()}`;
-
-    }
-  }
 
   const setTime = {};
 

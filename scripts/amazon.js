@@ -38,7 +38,7 @@ async function renderProductsGrid(){
               <img class="product-rating-stars"
                 src="${product.getStarsUrl()}">
               <div class="product-rating-count link-primary">
-                ${product.rating.count}
+                ${product.rating_count}
               </div>
             </div>
 

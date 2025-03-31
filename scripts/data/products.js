@@ -16,7 +16,8 @@ export class Product {
   id;
   image;
   name;
-  rating;
+  stars;
+  rating_count;
   priceCents;
   keywords;
 
@@ -24,13 +25,14 @@ export class Product {
     this.id = productDetails.id;
     this.image = productDetails.image;
     this.name = productDetails.name;
-    this.rating = productDetails.rating;
+    this.stars = productDetails.stars;
+    this.rating_count = productDetails.rating_count;
     this.priceCents = productDetails.priceCents;
     this.keywords = productDetails.keywords;
   }
 
   getStarsUrl(){
-    return `images/ratings/rating-${this.rating.stars*10}.png`;
+    return `images/ratings/rating-${this.stars*10}.png`;
   }
   getPrice(){
     return `$${formatCurrency(this.priceCents)}`;
@@ -71,41 +73,10 @@ export class Appliance extends Product{
   }
 }
 
-
-/*
-const date = new Date();
-console.log(date);
-console.log(date.toLocaleTimeString());
-
-console.log(this);
-*/
-/*
-const object2 = {
-  a: 2,
-  b: this.a
-}
-*/
-/*
-function logThis(){
-  console.log(this);
-}
-logThis();
-logThis.call('hello');
-*/
-/*
-this
-const object3 = {
-  method: ()=>{
-    console.log(this);
-  }
-}
-object3.method();
-*/
-
 export let products = [];
 
 export function loadProductsFetch(){
-  const promise = fetch('https://supersimplebackend.dev/products').then((response)=>{
+  const promise = fetch('http://localhost:5000/').then((response)=>{
     return response.json();
   }).then((productsData)=>{
     products = productsData.map((productDetails)=>{
@@ -117,6 +88,7 @@ export function loadProductsFetch(){
       return new Product(productDetails);
     });
     console.log('Products Loaded!');
+    console.log(products);
   }).catch((error)=>{
     console.log('Unexpected error. Please try again later.');
   });

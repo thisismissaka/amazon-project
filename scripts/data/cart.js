@@ -17,6 +17,8 @@ export function saveToStorage(){
 
 export function addToCart(productId){
 
+
+
   const quantityElement = document.querySelector(`.js-quantity-selector-${productId}`);
   const quantity = quantityElement ? Number(quantityElement.value) : 1; // Default to 1 if null; this line added because of the test
   let matchingItem;
@@ -113,8 +115,12 @@ export function loadCart(fun){
 }
 */
 export async function loadCartFetch(){
-  const response = await fetch('https://supersimplebackend.dev/cart');
+  const response = await fetch('http://localhost:5000/cart');
   const text = await response.text();
   console.log(text);
   return text;
+}
+
+export function addToCart(){
+  
 }

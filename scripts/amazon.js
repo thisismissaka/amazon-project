@@ -1,10 +1,11 @@
-import {cart, addToCart, caculateCartQuantity, updateCartQuantity} from './data/cart.js';
+import { addToCart, updateCartQuantity, loadCartFetch} from './data/cart.js';
 import { loadProductsFetch, products } from './data/products.js';
 
 renderProductsGrid();
 
 async function renderProductsGrid(){
   await loadProductsFetch();
+  await loadCartFetch();
 
   let productsHTML = '';
 
@@ -96,10 +97,10 @@ async function renderProductsGrid(){
   }
 
   document.querySelectorAll('.js-addToCart-button').forEach((button)=>{
-    button.addEventListener('click', ()=>{
+    button.addEventListener('click', async ()=>{
       const {productId} = button.dataset;
 
-      addToCart(productId);
+      await addToCart(productId);
       updateCartQuantity();
       showAddedMessage(productId);
 

@@ -1,56 +1,61 @@
-export let cart;
+export let cart = [];
 
-loadFromStorage();
+export  function loadCartFetch(){
+  const promise =  fetch('http://localhost:5000/cart').then((response)=>{
+    return response.json();
+  }).then((data)=>{
 
-export function loadFromStorage() {
-  cart = JSON.parse(localStorage.getItem('cart'));
+    cart = data;
 
-  if (!cart) {
-    cart = [];
-    console.log('Cart is empty!')
-  }
+    if (!cart) {
+      cart = [];
+      console.log('Cart is empty!')
+    }
+
+  }).catch((error)=>{
+    console.log('Unexpected error in cart db. Please try again later.');
+  });
+  console.log('Cart Loaded!');
+
+  return promise;
 }
 
-export function saveToStorage(){
-    localStorage.setItem('cart', JSON.stringify(cart));
-}
-
-export function addToCart(productId){
-
-
+export async function addToCart(productId){
 
   const quantityElement = document.querySelector(`.js-quantity-selector-${productId}`);
   const quantity = quantityElement ? Number(quantityElement.value) : 1; // Default to 1 if null; this line added because of the test
-  let matchingItem;
 
-  cart.forEach((cartItem)=>{
-    if(productId===cartItem.productId){
-      matchingItem = cartItem;
-    }
-  });
-
-  if(matchingItem){
-    matchingItem.quantity += quantity; 
-  }else{        
-    cart.push({
-      productId,
-      quantity,               
+  await fetch('http://localhost:5000/cart', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      productId: productId,
+      quantity: quantity,
       deliveryOptionId: '1'
-    });
-  }
-  saveToStorage();
+    })
+  }).then((response)=>{
+    return response.json();
+  }).then((cartData)=>{
+    cart = cartData;
+  });
 }
 
-export function removeFromCart(productId){
-    const newCart = [];
-
-    cart.forEach((cartItem)=>{
-        if(cartItem.productId !== productId){
-            newCart.push(cartItem);
-        }
+export async function removeFromCart(productId){
+    await fetch('http://localhost:5000/cart',{
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        productId: productId
+      })
+    }).then((response)=>{
+      return response.json();
+    }).then((cartData)=>{
+      cart = cartData;
     });
-    cart = newCart;
-    saveToStorage();
 }
 
 export function caculateCartQuantity(){
@@ -61,16 +66,20 @@ export function caculateCartQuantity(){
     return cartQuantity;
 }
 
-export function updateQuantity(productId, newQuantity){
-    let matchingItem = 0;
-
-    cart.forEach((cartItem)=>{
-        if(productId===cartItem.productId){
-            matchingItem = cartItem;
-        }
-    });
-    matchingItem.quantity = newQuantity;
-    saveToStorage();
+export async function updateQuantity(productId, quantity){
+  await fetch('http://localhost:5000/cart/updateQuantity', {
+    method: 'PATCH',
+    headers: {
+      'Content-type': 'application/json'},
+    body: JSON.stringify({
+      productId,
+      quantity
+    })
+  }).then((response)=>{
+    return response.json();
+  }).then((cartData)=>{
+    cart = cartData;
+  });
 }
 
 export function updateCartQuantity(){
@@ -85,42 +94,18 @@ export function updateCartQuantity(){
   }
 }
 
-export function updateDeliveryOptionId(productId, deliveryOptionId){
-  let matchingItem;
-
-  cart.forEach((cartItem)=>{
-    if(productId===cartItem.productId){
-      matchingItem = cartItem;
-    }
+export async function updateDeliveryOptionId(productId, deliveryOptionId){
+  await fetch('http://localhost:5000/cart/UpdateDeliveryOptionId', {
+    method: 'PATCH',
+    headers: {
+      'Content-type': 'application/json'},
+    body: JSON.stringify({
+      productId,
+      deliveryOptionId
+    })
+  }).then((response)=>{
+    return response.json();
+  }).then((cartData)=>{
+    cart = cartData;
   });
-
-  if(!matchingItem){
-    return;
-  }
-  
-  matchingItem.deliveryOptionId = deliveryOptionId;
-
-  saveToStorage();
-}
-/*
-export function loadCart(fun){
-  const xhr = new XMLHttpRequest();
-
-  xhr.addEventListener('load', ()=>{
-    console.log(xhr.response);
-    fun();
-  });
-  xhr.open('GET', 'https://supersimplebackend.dev/cart');
-  xhr.send();
-}
-*/
-export async function loadCartFetch(){
-  const response = await fetch('http://localhost:5000/cart');
-  const text = await response.text();
-  console.log(text);
-  return text;
-}
-
-export function addToCart(){
-  
 }

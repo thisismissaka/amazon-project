@@ -8,7 +8,8 @@ const sequelize = new Sequelize('amazon-app', 'root', '1212', {
 const CartItem = sequelize.define('CartItem', {
     productId: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
     },
     quantity: {
         type: DataTypes.INTEGER,
@@ -20,6 +21,7 @@ const CartItem = sequelize.define('CartItem', {
         defaultValue: '1'
     }
 },{
+    timestamps: false,
     tableName: 'cartItems'
 });
 

@@ -1,5 +1,5 @@
 import { getProduct, loadProductsFetch } from "./data/products.js";
-import { getOrder } from "./data/orders-fun.js";
+import { getArrivingDate, getOrder } from "./data/orders-fun.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { updateCartQuantity } from "./data/cart.js";
 
@@ -11,20 +11,21 @@ async function loadTrackingPage(){
     const productId = url.searchParams.get('productId');
 
     const order = getOrder(orderId);
-    const product = getProduct(productId);
+
+    const product = getProduct(parseInt(productId));
 
     let matchingItem;
-    order.products.forEach((product) => {
+    order.orderedItems.forEach((product) => {
         
-        if(productId===product.productId){
+        if(parseInt(productId)===product.productId){
             matchingItem = product;
         }
     });
-    const arrivingTime = dayjs(matchingItem.estimatedDeliveryTime).format('dddd, MMMM D');
+    const arrivingTime = getArrivingDate(matchingItem.deliveryOptionId, order.placedAt).format('dddd, MMMM D');
 
     const today = dayjs();
-    const orderTime = dayjs(order.orderTime);
-    const deliveryTime = dayjs(matchingItem.estimatedDeliveryTime);
+    const orderTime = dayjs(order.placedAt);
+    const deliveryTime = getArrivingDate(matchingItem.deliveryOptionId, order.placedAt);
     const percentProgress = ((today - orderTime) / (deliveryTime - orderTime)) * 100;
 
     let trackingHTML = `

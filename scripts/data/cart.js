@@ -11,6 +11,7 @@ export  function loadCartFetch(){
       cart = [];
       console.log('Cart is empty!')
     }
+    console.log(cart);
 
   }).catch((error)=>{
     console.log('Unexpected error in cart db. Please try again later.');
@@ -48,9 +49,9 @@ export async function removeFromCart(productId){
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        productId: productId
-      })
+      body: JSON.stringify(
+        productId ? {productId}: {}
+      )
     }).then((response)=>{
       return response.json();
     }).then((cartData)=>{
@@ -60,6 +61,9 @@ export async function removeFromCart(productId){
 
 export function caculateCartQuantity(){
     let cartQuantity = 0;
+    if(!cart){
+      console.log('Cart is Empty!');
+    }
     cart.forEach((cartItem)=>{
         cartQuantity += cartItem.quantity;
     });

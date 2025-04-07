@@ -1,11 +1,18 @@
-import { caculateCartQuantity, cart, loadCartFetch, removeFromCart, updateDeliveryOptionId, updateQuantity } from '../data/cart.js';
-import { getProduct, products } from '../data/products.js';
+import { caculateCartQuantity, cart, removeFromCart, updateDeliveryOptionId, updateQuantity } from '../data/cart.js';
+import { getProduct } from '../data/products.js';
 import { formatCurrency } from '../utils/money.js';
 import { calculateDeliveryDate, deliveryOptions, getDeliveryOption } from '../data/deliveryOptions.js';
 import { renderPaymentSummary } from './paymentSummary.js';
 
 export async function renderOrderSummary(){
-    let cartItemSummaryHTML = '';
+    let cartItemSummaryHTML = cart.length===0 ? `
+        <div>Your Cart is Empty!</div>
+        <a href='amazon.html'>
+        <button class="view-product-link button-primary">
+            View products
+        </button>
+        </a>
+        ` : '';
 
     cart.forEach((cartItem) =>{
         const productId = cartItem.productId;
@@ -13,7 +20,6 @@ export async function renderOrderSummary(){
 
         const deliveryOptionId = cartItem.deliveryOptionId;
         const deliveryOption = getDeliveryOption(deliveryOptionId);
-        console.log(deliveryOptionId);
 
         const dateString = calculateDeliveryDate(deliveryOption);
 

@@ -3,6 +3,7 @@ import cors from 'cors';
 import mysql from 'mysql2/promise';
 import bodyParser from 'body-parser';
 import cartRouter from './routes/cartRoute.js';
+import orderRouter from './routes/orderRoutes.js';
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.get('/', async (req, res) => {
   });
   
 app.use('/cart', cartRouter);
+app.use('/orders', orderRouter);
   
 
 app.listen(5000, ()=>{

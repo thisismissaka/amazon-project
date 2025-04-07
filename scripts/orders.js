@@ -1,37 +1,41 @@
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import formatCurrency from './utils/money.js';
 import { getProduct, loadProductsFetch } from './data/products.js';
-import { orders } from './data/orders-fun.js';
+import { cancelOrder, getArrivingDate, orders } from './data/orders-fun.js';
 import { addToCart } from './data/cart.js';
 import { updateCartQuantity } from './data/cart.js';
 
 generateOrderHTML();
 
 async function generateOrderHTML(){
-
     await loadProductsFetch();
 
     let orderHTML = '';
 
     orders.forEach((order)=>{
-        const orderId = order.id;
-        const placedTime = order.orderTime;
-        const total = order.totalCostCents;
+        const orderId = order.orderId;
+        const placedTime = order.placedAt;
+        const total = order.totalPrice;
+        let orderedItemHTML = '';
         const orderPlacedDate = dayjs(placedTime).format('MMMM D');
 
-        let orderedItemHTML = '';
+        let isCancelled;
+        if(order.status==='Cancelled'){
+            isCancelled = true;
+        }else{
+            isCancelled = false;
+        }
 
-        order.products.forEach((item)=>{
+        order.orderedItems.forEach((orderedItem)=>{
 
-            let matchingItem = getProduct(item.productId);
+            let matchingItem = getProduct(orderedItem.productId);
+            let time = getArrivingDate(orderedItem.deliveryOptionId, placedTime);
 
-            const time = item.estimatedDeliveryTime;
             const deliveryTime = dayjs(time).format('MMMM D');
-            const {quantity} = item;
+            const {quantity} = orderedItem;
 
             const trackingLink = document.querySelectorAll(".product-actions a");
-            trackingLink.href = `tracking.html?orderId=${order.id}&productId=${matchingItem.id}`;
-
+            trackingLink.href = `tracking.html?orderId=${orderId}&productId=${matchingItem.id}`;
 
             orderedItemHTML += `
                 
@@ -66,7 +70,7 @@ async function generateOrderHTML(){
 
         orderHTML += `
         
-            <div class="order-container">
+            <div class="order-container ${isCancelled? 'fade-order-html': ''}">
                 <div class="order-header">
                     <div class="order-header-left-section">
                     <div class="order-date">
@@ -80,8 +84,15 @@ async function generateOrderHTML(){
                     </div>
 
                     <div class="order-header-right-section">
+                    <div class="order-id">
                     <div class="order-header-label">Order ID:</div>
                     <div>${orderId}</div>
+                    </div>
+                    <div class="order-cancel">
+                        <button class="cancel-order-button button-primary js-cancel-order" data-order-id="${orderId}">
+                        ${isCancelled? 'Cancelled': 'Cancel order'}
+                        </button>
+                    </div>
                     </div>
                 </div>
                 <div class="order-details-grid">
@@ -91,7 +102,6 @@ async function generateOrderHTML(){
         
         `;
     });
-    updateCartQuantity();
 
     document.querySelector('.js-orders-grid').innerHTML = orderHTML;
 
@@ -99,7 +109,8 @@ async function generateOrderHTML(){
         button.addEventListener('click', ()=>{
 
             const {productId} = button.dataset;
-            addToCart(productId);     
+            addToCart(productId);   
+            updateCartQuantity()  
 
             button.innerHTML = 'Added';
             setTimeout(()=>{
@@ -108,7 +119,19 @@ async function generateOrderHTML(){
                 <span class="buy-again-message">Buy it again</span>
                 `;
             },1000);
-            updateCartQuantity()
         });
     });
+    
+    document.querySelectorAll('.js-cancel-order').forEach((button)=>{
+        button.addEventListener('click', async()=>{
+            const {orderId} = button.dataset;
+            await cancelOrder(orderId);  
+            
+            button.innerHTML = 'Cancelled';
+
+            document.querySelector('.order-container').classList.add('fade-order-html');
+        })
+    })
+
+    updateCartQuantity();
 }

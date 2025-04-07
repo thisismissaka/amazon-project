@@ -66,7 +66,7 @@ export async function updateQuantity(req, res){
 export async function deleteCartItem(req, res){
     try{
         const { productId }  = req.body;
-        const deletedRows = await CartItem.destroy({where: {productId}});
+        const deletedRows = await CartItem.destroy({where: productId ? {productId}: {}});
         if (deletedRows > 0) {
             const cartItems = await CartItem.findAll();
             res.json(cartItems);

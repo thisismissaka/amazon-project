@@ -52,8 +52,13 @@
   margin-right: 45px;
 }
 
+.order-id {
+  margin-right: 45px;
+}
+
 .order-header-right-section {
-  flex-shrink: 1;
+  flex-shrink: 0;
+  display: flex;
 }
 
 @media (max-width: 575px) {
@@ -82,6 +87,7 @@
   .order-header-right-section {
     display: grid;
     grid-template-columns: auto 1fr;
+    flex-direction: column;
   }
 }
 
@@ -160,6 +166,11 @@
   font-size: 15px;
   padding: 8px;
 }
+.cancel-order-button {
+  width: 100%;
+  font-size: 15px;
+  padding: 8px;
+}
 
 @media (max-width: 800px) {
   .buy-again-button {
@@ -217,4 +228,10 @@
     width: 100%;
     padding: 12px;
   }
+}
+
+.fade-order-html {
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }

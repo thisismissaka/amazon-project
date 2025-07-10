@@ -8,12 +8,9 @@ export async function loadOrders(){
   await fetch('http://localhost:5000/orders').then((response)=>{
     return response.json();
   }).then((data=>{
-    console.log(data);
-    console.log(Array.isArray(data)); // returns true if it's an array
 
     orders = data;
 
-    console.log('Orders loaded!');
   })).catch((error)=>{
     console.log(`${error}. Try again later!`);
   })

@@ -2,13 +2,14 @@ import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import formatCurrency from './utils/money.js';
 import { getProduct, loadProductsFetch } from './data/products.js';
 import { cancelOrder, getArrivingDate, orders } from './data/orders-fun.js';
-import { addToCart } from './data/cart.js';
+import { addToCart, loadCartFetch } from './data/cart.js';
 import { updateCartQuantity } from './data/cart.js';
 
 generateOrderHTML();
 
 async function generateOrderHTML(){
     await loadProductsFetch();
+    await loadCartFetch();
 
     let orderHTML = '';
 

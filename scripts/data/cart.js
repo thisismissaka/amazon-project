@@ -9,14 +9,11 @@ export  function loadCartFetch(){
 
     if (!cart) {
       cart = [];
-      console.log('Cart is empty!')
     }
-    console.log(cart);
 
   }).catch((error)=>{
     console.log('Unexpected error in cart db. Please try again later.');
   });
-  console.log('Cart Loaded!');
 
   return promise;
 }
@@ -62,7 +59,6 @@ export async function removeFromCart(productId){
 export function caculateCartQuantity(){
     let cartQuantity = 0;
     if(!cart){
-      console.log('Cart is Empty!');
     }
     cart.forEach((cartItem)=>{
         cartQuantity += cartItem.quantity;
@@ -87,15 +83,17 @@ export async function updateQuantity(productId, quantity){
 }
 
 export function updateCartQuantity(){
-  if(caculateCartQuantity()=== 0){
+  const quantity = caculateCartQuantity();
 
-    document.querySelector('.js-cart-quantity').innerHTML = ' ';
+  const cartQuantityElements = document.querySelectorAll('.js-cart-quantity');
 
-  }else{
-    
-    document.querySelector('.js-cart-quantity').innerHTML = `${caculateCartQuantity()}`;
-
-  }
+  cartQuantityElements.forEach(cartQuantityElement => {
+    if(quantity === 0){
+      cartQuantityElement.innerHTML = ' ';
+    }else{
+      cartQuantityElement.innerHTML = `${quantity}`;
+    }
+  });
 }
 
 export async function updateDeliveryOptionId(productId, deliveryOptionId){

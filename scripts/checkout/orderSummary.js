@@ -161,7 +161,6 @@ export async function renderOrderSummary(){
     document.querySelectorAll('.js-delivery-option').forEach((element)=>{
         element.addEventListener('click', async ()=>{
             const {productId, deliveryOptionId} = element.dataset;
-            console.log(productId)
             await updateDeliveryOptionId(productId, deliveryOptionId);
             renderOrderSummary();
             renderPaymentSummary();
